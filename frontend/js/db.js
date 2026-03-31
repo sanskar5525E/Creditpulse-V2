@@ -326,3 +326,20 @@ const DB = (() => {
     loadAllData,
   };
 })();
+async function signUp(email, password, name) {
+  const { data, error } = await supabase.auth.signUp({
+    email, password,
+    options: { data: { name } }
+  });
+  if (error) throw error;
+  
+  // Auto sign in immediately after signup (works when email confirm is OFF)
+  const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+    email, password
+  });
+  if (loginError) throw loginError;
+  
+  currentUser = loginData.user;
+  localSet(KEYS.user, { email, name, id: loginData.user.id });
+  return loginData;
+}
