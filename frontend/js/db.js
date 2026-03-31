@@ -16,7 +16,7 @@ const DB = (() => {
   function initSupabase() {
     // Supabase JS v2 loaded via CDN
     if (window.supabase) {
-      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      supabase = window.supabase.Client(SUPABASE_URL, SUPABASE_ANON_KEY);
     }
   }
 
