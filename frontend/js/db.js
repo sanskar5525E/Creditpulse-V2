@@ -17,8 +17,11 @@ const DB = (() => {
     STATE.status = status;
     STATE.error  = error;
 
-    const banner = document.getElementById('offline-banner');
-    if (banner) {
+    // Wait for DOM to be ready before touching the banner
+    const updateBanner = () => {
+      const banner = document.getElementById('offline-banner');
+      if (!banner) return; // DOM not ready yet, skip silently
+
       if (status === 'offline' || !STATE.isOnline) {
         banner.classList.remove('hidden');
         banner.textContent = '📵 Offline — data saved locally';
@@ -29,7 +32,15 @@ const DB = (() => {
       } else {
         banner.classList.add('hidden');
       }
+    };
+
+    // If DOM already loaded run now, else wait
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', updateBanner, { once: true });
+    } else {
+      updateBanner();
     }
+
     console.log('[CreditPulse] State:', status, error || '');
   }
 
