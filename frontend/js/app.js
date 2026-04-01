@@ -533,23 +533,28 @@ const App = (() => {
     openProfile(id);
   }
 
-  // ── INIT ──────────────────────────────────────────────────
-  async function init() {
-    // Show splash for 1.5s
-    showScreen('splash');
-    await new Promise(r => setTimeout(r, 1500));
+ async function init() {
+  showScreen('splash');
+  await new Promise(r => setTimeout(r, 1500));
 
-    // Try to restore session
+  try {
     const user = await DB.restoreSession();
+
     if (user) {
       renderDashboard();
       showScreen('dashboard');
     } else {
       showScreen('login');
     }
+
+  } catch (e) {
+    console.error('Init failed:', e);
+
+    alert('Something went wrong. Please login again.');
+
+    showScreen('login');
   }
+}
 
-  init();
-
-  return { openProfileById };
+return { openProfileById };
 })();
