@@ -12,6 +12,9 @@
 </head>
 <body>
 
+<!-- OFFLINE BANNER — must be first so db.js can always find it -->
+<div id="offline-banner" class="offline-banner hidden">📵 Offline — data saved locally</div>
+
 <!-- SCREEN: SPLASH -->
 <div id="screen-splash" class="screen active">
   <div class="splash-inner">
@@ -289,7 +292,11 @@
     </div>
     <div class="form-group">
       <label class="form-label">Phone Number *</label>
-      <input type="tel" id="new-cust-phone" class="form-input" placeholder="+91 98765 43210" />
+      <div class="phone-input-wrap">
+        <span class="phone-prefix">+91</span>
+        <input type="tel" id="new-cust-phone" class="form-input phone-input" placeholder="98765 43210" maxlength="10" inputmode="numeric" />
+      </div>
+      <div class="form-hint">10 digit mobile number</div>
     </div>
     <div class="form-group">
       <label class="form-label">Credit Limit (₹)</label>
@@ -371,9 +378,6 @@
 
 <!-- TOAST -->
 <div id="toast" class="toast hidden"></div>
-
-<!-- OFFLINE BANNER -->
-<div id="offline-banner" class="offline-banner hidden">📵 Offline — data saved locally</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="js/config.js"></script>
