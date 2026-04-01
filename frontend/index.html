@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -11,421 +10,375 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
-
 <body>
-  <!-- SCREEN: SPLASH -->
-  <div id="screen-splash" class="screen active">
-    <div class="splash-inner">
-      <div class="splash-logo">₹</div>
-      <div class="splash-title">CreditPulse</div>
-      <div class="splash-sub">Smart khata for wholesalers</div>
+
+<!-- SCREEN: SPLASH -->
+<div id="screen-splash" class="screen active">
+  <div class="splash-inner">
+    <div class="splash-logo">₹</div>
+    <div class="splash-title">CreditPulse</div>
+    <div class="splash-sub">Smart khata for wholesalers</div>
+  </div>
+</div>
+
+<!-- SCREEN: LOGIN -->
+<div id="screen-login" class="screen">
+  <div class="login-inner">
+    <div class="login-logo">₹</div>
+    <h1 class="login-title">CreditPulse</h1>
+    <p class="login-sub">Sign in to your account</p>
+    <div class="form-group">
+      <label class="form-label">Mobile / Email</label>
+      <input type="text" id="login-email" class="form-input" placeholder="you@example.com" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input type="password" id="login-password" class="form-input" placeholder="••••••••" />
+    </div>
+    <button class="btn-primary full" id="btn-login">Sign In</button>
+    <p class="login-switch">New here? <span class="link" id="go-signup">Create account</span></p>
+    <div id="login-error" class="error-msg hidden"></div>
+  </div>
+</div>
+
+<!-- SCREEN: SIGNUP -->
+<div id="screen-signup" class="screen">
+  <div class="login-inner">
+    <div class="login-logo">₹</div>
+    <h1 class="login-title">Create Account</h1>
+    <p class="login-sub">Start tracking credit today</p>
+    <div class="form-group">
+      <label class="form-label">Your Name / Business Name</label>
+      <input type="text" id="signup-name" class="form-input" placeholder="e.g. Sharma Wholesale" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input type="email" id="signup-email" class="form-input" placeholder="you@example.com" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input type="password" id="signup-password" class="form-input" placeholder="min 6 characters" />
+    </div>
+    <button class="btn-primary full" id="btn-signup">Create Account</button>
+    <p class="login-switch">Already have account? <span class="link" id="go-login">Sign In</span></p>
+    <div id="signup-error" class="error-msg hidden"></div>
+  </div>
+</div>
+
+<!-- SCREEN: DASHBOARD -->
+<div id="screen-dashboard" class="screen">
+
+  <!-- Call Today Banner -->
+  <div id="call-banner" class="call-banner hidden">
+    <div class="call-banner-header">
+      <span class="call-banner-title">CALL TODAY</span>
+      <span id="call-count" class="call-count-badge">0</span>
+    </div>
+    <div id="call-list"></div>
+  </div>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <div class="top-bar-title">Dashboard</div>
+      <div class="top-bar-sub" id="dashboard-date"></div>
+    </div>
+    <div class="top-bar-right">
+      <div class="total-label">Total due</div>
+      <div class="total-amount" id="total-outstanding">₹0</div>
     </div>
   </div>
 
-  <!-- SCREEN: LOGIN -->
-  <div id="screen-login" class="screen">
-    <div class="login-inner">
-      <div class="login-logo">₹</div>
-      <h1 class="login-title">CreditPulse</h1>
-      <p class="login-sub">Sign in to your account</p>
-      <div class="form-group">
-        <label class="form-label">Mobile / Email</label>
-        <input type="text" id="login-email" class="form-input" placeholder="you@example.com" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input type="password" id="login-password" class="form-input" placeholder="••••••••" />
-      </div>
-      <button class="btn-primary full" id="btn-login">Sign In</button>
-      <p class="login-switch">New here? <span class="link" id="go-signup">Create account</span></p>
-      <div id="login-error" class="error-msg hidden"></div>
+  <!-- Search -->
+  <div class="search-wrap">
+    <svg class="search-icon" width="14" height="14" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <input type="text" id="search-input" class="search-input" placeholder="Search customer..." />
+  </div>
+
+  <!-- Filter chips -->
+  <div class="filter-strip">
+    <div class="chip active" data-filter="all">All</div>
+    <div class="chip danger" data-filter="high">🔴 Big Risk</div>
+    <div class="chip warning" data-filter="medium">🟡 Overdue</div>
+    <div class="chip success" data-filter="low">🟢 Safe</div>
+  </div>
+
+  <!-- Customer list -->
+  <div class="scroll-area" id="customer-list">
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">📋</div>
+      <div class="empty-title">No customers yet</div>
+      <div class="empty-sub">Tap + to add your first customer</div>
     </div>
   </div>
 
-  <!-- SCREEN: SIGNUP -->
-  <div id="screen-signup" class="screen">
-    <div class="login-inner">
-      <div class="login-logo">₹</div>
-      <h1 class="login-title">Create Account</h1>
-      <p class="login-sub">Start tracking credit today</p>
-      <div class="form-group">
-        <label class="form-label">Your Name / Business Name</label>
-        <input type="text" id="signup-name" class="form-input" placeholder="e.g. Sharma Wholesale" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input type="email" id="signup-email" class="form-input" placeholder="you@example.com" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input type="password" id="signup-password" class="form-input" placeholder="min 6 characters" />
-      </div>
-      <button class="btn-primary full" id="btn-signup">Create Account</button>
-      <p class="login-switch">Already have account? <span class="link" id="go-login">Sign In</span></p>
-      <div id="signup-error" class="error-msg hidden"></div>
+  <!-- FAB -->
+  <button class="fab" id="fab-add" title="Add Customer">+</button>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <div class="nav-item active" data-nav="dashboard">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Home</span>
+    </div>
+    <div class="nav-item" data-nav="report">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-6"/></svg>
+      <span>Report</span>
+    </div>
+    <div class="nav-item" data-nav="settings">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+      <span>Settings</span>
     </div>
   </div>
+</div>
 
-  <!-- SCREEN: DASHBOARD -->
-  <div id="screen-dashboard" class="screen">
-
-    <!-- Call Today Banner -->
-    <div id="call-banner" class="call-banner hidden">
-      <div class="call-banner-header">
-        <span class="call-banner-title">CALL TODAY</span>
-        <span id="call-count" class="call-count-badge">0</span>
-      </div>
-      <div id="call-list"></div>
+<!-- SCREEN: CUSTOMER PROFILE -->
+<div id="screen-profile" class="screen">
+  <div class="profile-topbar">
+    <button class="back-btn" id="btn-back-dashboard">← Back</button>
+    <button class="danger-text-btn" id="btn-delete-customer">Delete</button>
+  </div>
+  <div class="profile-header">
+    <div class="profile-avatar" id="profile-avatar">RT</div>
+    <div class="profile-info">
+      <div class="profile-name" id="profile-name">Ravi Traders</div>
+      <a class="profile-phone" id="profile-phone" href="#">+91 98765 43210</a>
     </div>
-
-    <!-- Top Bar -->
-    <div class="top-bar">
-      <div class="top-bar-left">
-        <div class="top-bar-title">Dashboard</div>
-        <div class="top-bar-sub" id="dashboard-date"></div>
-      </div>
-      <div class="top-bar-right">
-        <div class="total-label">Total due</div>
-        <div class="total-amount" id="total-outstanding">₹0</div>
-      </div>
-    </div>
-
-    <!-- Search -->
-    <div class="search-wrap">
-      <svg class="search-icon" width="14" height="14" viewBox="0 0 16 16">
-        <circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5" fill="none" />
-        <path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-      </svg>
-      <input type="text" id="search-input" class="search-input" placeholder="Search customer..." />
-    </div>
-
-    <!-- Filter chips -->
-    <div class="filter-strip">
-      <div class="chip active" data-filter="all">All</div>
-      <div class="chip danger" data-filter="high">🔴 Big Risk</div>
-      <div class="chip warning" data-filter="medium">🟡 Overdue</div>
-      <div class="chip success" data-filter="low">🟢 Safe</div>
-    </div>
-
-    <!-- Customer list -->
-    <div class="scroll-area" id="customer-list">
-      <div class="empty-state" id="empty-state">
-        <div class="empty-icon">📋</div>
-        <div class="empty-title">No customers yet</div>
-        <div class="empty-sub">Tap + to add your first customer</div>
-      </div>
-    </div>
-
-    <!-- FAB -->
-    <button class="fab" id="fab-add" title="Add Customer">+</button>
-
-    <!-- Bottom Nav -->
-    <div class="bottom-nav">
-      <div class="nav-item active" data-nav="dashboard">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <rect x="3" y="3" width="7" height="7" rx="1" />
-          <rect x="14" y="3" width="7" height="7" rx="1" />
-          <rect x="3" y="14" width="7" height="7" rx="1" />
-          <rect x="14" y="14" width="7" height="7" rx="1" />
-        </svg>
-        <span>Home</span>
-      </div>
-      <div class="nav-item" data-nav="report">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path d="M3 3v18h18" />
-          <path d="M7 16l4-4 4 4 4-6" />
-        </svg>
-        <span>Report</span>
-      </div>
-      <div class="nav-item" data-nav="settings">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <circle cx="12" cy="12" r="3" />
-          <path
-            d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" />
-        </svg>
-        <span>Settings</span>
-      </div>
-    </div>
+    <div class="risk-badge" id="profile-risk-badge">High Risk</div>
   </div>
 
-  <!-- SCREEN: CUSTOMER PROFILE -->
-  <div id="screen-profile" class="screen">
-    <div class="profile-topbar">
-      <button class="back-btn" id="btn-back-dashboard">← Back</button>
-      <button class="danger-text-btn" id="btn-delete-customer">Delete</button>
-    </div>
-    <div class="profile-header">
-      <div class="profile-avatar" id="profile-avatar">RT</div>
-      <div class="profile-info">
-        <div class="profile-name" id="profile-name">Ravi Traders</div>
-        <a class="profile-phone" id="profile-phone" href="#">+91 98765 43210</a>
-      </div>
-      <div class="risk-badge" id="profile-risk-badge">High Risk</div>
-    </div>
-
-    <!-- Balance block -->
-    <div class="balance-block">
-      <div class="balance-label">Outstanding Balance</div>
-      <div class="balance-amount" id="profile-balance">₹0</div>
-      <div class="balance-meta" id="profile-meta">Last paid: —</div>
-    </div>
-
-    <!-- Credit bar -->
-    <div class="credit-bar-block">
-      <div class="credit-bar-labels">
-        <span id="credit-used-label">Used: ₹0</span>
-        <span id="credit-limit-label">Limit: ₹0</span>
-      </div>
-      <div class="credit-bar-bg">
-        <div class="credit-bar-fill" id="credit-bar-fill"></div>
-      </div>
-      <div class="credit-status" id="credit-status"></div>
-    </div>
-
-    <!-- Prediction -->
-    <div class="prediction-block" id="prediction-block">
-      <span class="predict-icon" id="predict-icon">⚠️</span>
-      <span class="predict-text" id="predict-text">Calculating risk...</span>
-    </div>
-
-    <!-- Action buttons -->
-    <div class="action-row">
-      <button class="btn-primary flex1" id="btn-paid-me">✅ Paid Me</button>
-      <button class="btn-secondary flex1" id="btn-gave-goods">📦 Gave Goods</button>
-    </div>
-
-    <!-- WhatsApp reminder -->
-    <button class="btn-whatsapp full" id="btn-whatsapp">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-        <path
-          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-      </svg>
-      Send Reminder on WhatsApp
-    </button>
-
-    <!-- Transaction history -->
-    <div class="txn-section">
-      <div class="txn-section-label">Recent Transactions</div>
-      <div id="txn-list"></div>
-    </div>
+  <!-- Balance block -->
+  <div class="balance-block">
+    <div class="balance-label">Outstanding Balance</div>
+    <div class="balance-amount" id="profile-balance">₹0</div>
+    <div class="balance-meta" id="profile-meta">Last paid: —</div>
   </div>
 
-  <!-- SCREEN: REPORT -->
-  <div id="screen-report" class="screen">
-    <div class="top-bar">
-      <div class="top-bar-title">Report</div>
-      <div class="top-bar-sub">Business overview</div>
+  <!-- Credit bar -->
+  <div class="credit-bar-block">
+    <div class="credit-bar-labels">
+      <span id="credit-used-label">Used: ₹0</span>
+      <span id="credit-limit-label">Limit: ₹0</span>
     </div>
-    <div class="report-body">
-      <div class="stat-grid">
-        <div class="stat-card">
-          <div class="stat-label">Total Outstanding</div>
-          <div class="stat-value danger-text" id="rpt-total">₹0</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Total Customers</div>
-          <div class="stat-value" id="rpt-customers">0</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">High Risk</div>
-          <div class="stat-value danger-text" id="rpt-high">0</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Safe Customers</div>
-          <div class="stat-value success-text" id="rpt-safe">0</div>
-        </div>
-      </div>
-      <div class="txn-section-label" style="padding:0 16px;margin-top:16px;">Top Defaulters</div>
-      <div id="rpt-defaulters"></div>
+    <div class="credit-bar-bg">
+      <div class="credit-bar-fill" id="credit-bar-fill"></div>
     </div>
-    <div class="bottom-nav">
-      <div class="nav-item" data-nav="dashboard">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <rect x="3" y="3" width="7" height="7" rx="1" />
-          <rect x="14" y="3" width="7" height="7" rx="1" />
-          <rect x="3" y="14" width="7" height="7" rx="1" />
-          <rect x="14" y="14" width="7" height="7" rx="1" />
-        </svg>
-        <span>Home</span>
-      </div>
-      <div class="nav-item active" data-nav="report">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path d="M3 3v18h18" />
-          <path d="M7 16l4-4 4 4 4-6" />
-        </svg>
-        <span>Report</span>
-      </div>
-      <div class="nav-item" data-nav="settings">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <circle cx="12" cy="12" r="3" />
-          <path
-            d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" />
-        </svg>
-        <span>Settings</span>
-      </div>
-    </div>
+    <div class="credit-status" id="credit-status"></div>
   </div>
 
-  <!-- SCREEN: SETTINGS -->
-  <div id="screen-settings" class="screen">
-    <div class="top-bar">
-      <div class="top-bar-title">Settings</div>
-      <div class="top-bar-sub" id="settings-user-name">My Account</div>
-    </div>
-    <div class="settings-body">
-      <div class="settings-section-label">Account</div>
-      <div class="settings-item" id="btn-logout">
-        <span>Sign Out</span>
-        <span class="settings-arrow">→</span>
-      </div>
-      <div class="settings-section-label">App</div>
-      <div class="settings-item">
-        <span>Version</span>
-        <span class="settings-value">1.0.0</span>
-      </div>
-      <div class="settings-item">
-        <span>Offline Mode</span>
-        <span class="settings-value success-text">Active</span>
-      </div>
-      <div class="settings-section-label">Default Credit Limit</div>
-      <div class="settings-item-input">
-        <label class="form-label">Default limit for new customers (₹)</label>
-        <input type="number" id="default-credit-limit" class="form-input" placeholder="e.g. 30000" />
-        <button class="btn-primary full" id="btn-save-settings" style="margin-top:8px;">Save</button>
-      </div>
-    </div>
-    <div class="bottom-nav">
-      <div class="nav-item" data-nav="dashboard">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <rect x="3" y="3" width="7" height="7" rx="1" />
-          <rect x="14" y="3" width="7" height="7" rx="1" />
-          <rect x="3" y="14" width="7" height="7" rx="1" />
-          <rect x="14" y="14" width="7" height="7" rx="1" />
-        </svg>
-        <span>Home</span>
-      </div>
-      <div class="nav-item" data-nav="report">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path d="M3 3v18h18" />
-          <path d="M7 16l4-4 4 4 4-6" />
-        </svg>
-        <span>Report</span>
-      </div>
-      <div class="nav-item active" data-nav="settings">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <circle cx="12" cy="12" r="3" />
-          <path
-            d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" />
-        </svg>
-        <span>Settings</span>
-      </div>
-    </div>
+  <!-- Prediction -->
+  <div class="prediction-block" id="prediction-block">
+    <span class="predict-icon" id="predict-icon">⚠️</span>
+    <span class="predict-text" id="predict-text">Calculating risk...</span>
   </div>
 
-  <!-- MODAL: ADD CUSTOMER -->
-  <div id="modal-add-customer" class="modal-overlay hidden">
-    <div class="modal-sheet">
-      <div class="modal-title">Add New Customer</div>
-      <div class="form-group">
-        <label class="form-label">Customer Name *</label>
-        <input type="text" id="new-cust-name" class="form-input" placeholder="e.g. Ravi Traders" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">Phone Number *</label>
-        <input type="tel" id="new-cust-phone" class="form-input" placeholder="+91 98765 43210" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">Credit Limit (₹)</label>
-        <input type="number" id="new-cust-limit" class="form-input" placeholder="e.g. 30000" />
-      </div>
-      <button class="btn-primary full" id="btn-save-customer">Add Customer</button>
-      <button class="btn-ghost full" id="btn-cancel-add">Cancel</button>
-      <div id="add-cust-error" class="error-msg hidden"></div>
-    </div>
+  <!-- Action buttons -->
+  <div class="action-row">
+    <button class="btn-primary flex1" id="btn-paid-me">✅ Paid Me</button>
+    <button class="btn-secondary flex1" id="btn-gave-goods">📦 Gave Goods</button>
   </div>
 
-  <!-- MODAL: PAID ME (Record Payment) -->
-  <div id="modal-paid-me" class="modal-overlay hidden">
-    <div class="modal-sheet">
-      <div class="modal-title">Paid Me 💵</div>
-      <div class="modal-subtitle" id="paid-me-subtitle">Customer paid you</div>
-      <div class="amount-display">
-        <div class="amount-display-label">Amount (₹)</div>
-        <div class="amount-display-num" id="paid-amount-display">₹0</div>
+  <!-- WhatsApp reminder -->
+  <button class="btn-whatsapp full" id="btn-whatsapp">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Send Reminder on WhatsApp
+  </button>
+
+  <!-- Transaction history -->
+  <div class="txn-section">
+    <div class="txn-section-label">Recent Transactions</div>
+    <div id="txn-list"></div>
+  </div>
+</div>
+
+<!-- SCREEN: REPORT -->
+<div id="screen-report" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">Report</div>
+    <div class="top-bar-sub">Business overview</div>
+  </div>
+  <div class="report-body">
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Outstanding</div>
+        <div class="stat-value danger-text" id="rpt-total">₹0</div>
       </div>
-      <div class="quick-amounts">
-        <div class="qa-chip" data-amt="5000">₹5K</div>
-        <div class="qa-chip" data-amt="10000">₹10K</div>
-        <div class="qa-chip" data-amt="20000">₹20K</div>
-        <div class="qa-chip" data-amt="50000">₹50K</div>
+      <div class="stat-card">
+        <div class="stat-label">Total Customers</div>
+        <div class="stat-value" id="rpt-customers">0</div>
       </div>
-      <div class="numpad">
-        <div class="numpad-key" data-key="1">1</div>
-        <div class="numpad-key" data-key="2">2</div>
-        <div class="numpad-key" data-key="3">3</div>
-        <div class="numpad-key" data-key="4">4</div>
-        <div class="numpad-key" data-key="5">5</div>
-        <div class="numpad-key" data-key="6">6</div>
-        <div class="numpad-key" data-key="7">7</div>
-        <div class="numpad-key" data-key="8">8</div>
-        <div class="numpad-key" data-key="9">9</div>
-        <div class="numpad-key" data-key="000">000</div>
-        <div class="numpad-key" data-key="0">0</div>
-        <div class="numpad-key" data-key="del">⌫</div>
+      <div class="stat-card">
+        <div class="stat-label">High Risk</div>
+        <div class="stat-value danger-text" id="rpt-high">0</div>
       </div>
-      <button class="btn-primary full" id="btn-confirm-paid">Confirm Payment</button>
-      <button class="btn-ghost full" id="btn-cancel-paid">Cancel</button>
+      <div class="stat-card">
+        <div class="stat-label">Safe Customers</div>
+        <div class="stat-value success-text" id="rpt-safe">0</div>
+      </div>
+    </div>
+    <div class="txn-section-label" style="padding:0 16px;margin-top:16px;">Top Defaulters</div>
+    <div id="rpt-defaulters"></div>
+  </div>
+  <div class="bottom-nav">
+    <div class="nav-item" data-nav="dashboard">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Home</span>
+    </div>
+    <div class="nav-item active" data-nav="report">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-6"/></svg>
+      <span>Report</span>
+    </div>
+    <div class="nav-item" data-nav="settings">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+      <span>Settings</span>
     </div>
   </div>
+</div>
 
-  <!-- MODAL: GAVE GOODS (Add Credit Sale) -->
-  <div id="modal-gave-goods" class="modal-overlay hidden">
-    <div class="modal-sheet">
-      <div class="modal-title">Gave Goods 📦</div>
-      <div class="modal-subtitle" id="gave-goods-subtitle">New credit sale</div>
-      <div class="amount-display">
-        <div class="amount-display-label">Amount (₹)</div>
-        <div class="amount-display-num" id="goods-amount-display">₹0</div>
-      </div>
-      <div class="quick-amounts">
-        <div class="qa-chip goods-chip" data-amt="5000">₹5K</div>
-        <div class="qa-chip goods-chip" data-amt="10000">₹10K</div>
-        <div class="qa-chip goods-chip" data-amt="20000">₹20K</div>
-        <div class="qa-chip goods-chip" data-amt="50000">₹50K</div>
-      </div>
-      <div class="numpad goods-numpad">
-        <div class="numpad-key" data-key="1">1</div>
-        <div class="numpad-key" data-key="2">2</div>
-        <div class="numpad-key" data-key="3">3</div>
-        <div class="numpad-key" data-key="4">4</div>
-        <div class="numpad-key" data-key="5">5</div>
-        <div class="numpad-key" data-key="6">6</div>
-        <div class="numpad-key" data-key="7">7</div>
-        <div class="numpad-key" data-key="8">8</div>
-        <div class="numpad-key" data-key="9">9</div>
-        <div class="numpad-key" data-key="000">000</div>
-        <div class="numpad-key" data-key="0">0</div>
-        <div class="numpad-key" data-key="del">⌫</div>
-      </div>
-      <button class="btn-primary full" id="btn-confirm-goods">Confirm Sale</button>
-      <button class="btn-ghost full" id="btn-cancel-goods">Cancel</button>
+<!-- SCREEN: SETTINGS -->
+<div id="screen-settings" class="screen">
+  <div class="top-bar">
+    <div class="top-bar-title">Settings</div>
+    <div class="top-bar-sub" id="settings-user-name">My Account</div>
+  </div>
+  <div class="settings-body">
+    <div class="settings-section-label">Account</div>
+    <div class="settings-item" id="btn-logout">
+      <span>Sign Out</span>
+      <span class="settings-arrow">→</span>
+    </div>
+    <div class="settings-section-label">App</div>
+    <div class="settings-item">
+      <span>Version</span>
+      <span class="settings-value">1.0.0</span>
+    </div>
+    <div class="settings-item">
+      <span>Offline Mode</span>
+      <span class="settings-value success-text">Active</span>
+    </div>
+    <div class="settings-section-label">Default Credit Limit</div>
+    <div class="settings-item-input">
+      <label class="form-label">Default limit for new customers (₹)</label>
+      <input type="number" id="default-credit-limit" class="form-input" placeholder="e.g. 30000" />
+      <button class="btn-primary full" id="btn-save-settings" style="margin-top:8px;">Save</button>
     </div>
   </div>
+  <div class="bottom-nav">
+    <div class="nav-item" data-nav="dashboard">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Home</span>
+    </div>
+    <div class="nav-item" data-nav="report">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-6"/></svg>
+      <span>Report</span>
+    </div>
+    <div class="nav-item active" data-nav="settings">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+      <span>Settings</span>
+    </div>
+  </div>
+</div>
 
-  <!-- TOAST -->
-  <div id="toast" class="toast hidden"></div>
+<!-- MODAL: ADD CUSTOMER -->
+<div id="modal-add-customer" class="modal-overlay hidden">
+  <div class="modal-sheet">
+    <div class="modal-title">Add New Customer</div>
+    <div class="form-group">
+      <label class="form-label">Customer Name *</label>
+      <input type="text" id="new-cust-name" class="form-input" placeholder="e.g. Ravi Traders" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Phone Number *</label>
+      <input type="tel" id="new-cust-phone" class="form-input" placeholder="+91 98765 43210" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Credit Limit (₹)</label>
+      <input type="number" id="new-cust-limit" class="form-input" placeholder="e.g. 30000" />
+    </div>
+    <button class="btn-primary full" id="btn-save-customer">Add Customer</button>
+    <button class="btn-ghost full" id="btn-cancel-add">Cancel</button>
+    <div id="add-cust-error" class="error-msg hidden"></div>
+  </div>
+</div>
 
-  <!-- OFFLINE BANNER -->
-  <div id="offline-banner" class="offline-banner hidden">📵 Offline — data saved locally</div>
+<!-- MODAL: PAID ME (Record Payment) -->
+<div id="modal-paid-me" class="modal-overlay hidden">
+  <div class="modal-sheet">
+    <div class="modal-title">Paid Me 💵</div>
+    <div class="modal-subtitle" id="paid-me-subtitle">Customer paid you</div>
+    <div class="amount-display">
+      <div class="amount-display-label">Amount (₹)</div>
+      <div class="amount-display-num" id="paid-amount-display">₹0</div>
+    </div>
+    <div class="quick-amounts">
+      <div class="qa-chip" data-amt="5000">₹5K</div>
+      <div class="qa-chip" data-amt="10000">₹10K</div>
+      <div class="qa-chip" data-amt="20000">₹20K</div>
+      <div class="qa-chip" data-amt="50000">₹50K</div>
+    </div>
+    <div class="numpad">
+      <div class="numpad-key" data-key="1">1</div>
+      <div class="numpad-key" data-key="2">2</div>
+      <div class="numpad-key" data-key="3">3</div>
+      <div class="numpad-key" data-key="4">4</div>
+      <div class="numpad-key" data-key="5">5</div>
+      <div class="numpad-key" data-key="6">6</div>
+      <div class="numpad-key" data-key="7">7</div>
+      <div class="numpad-key" data-key="8">8</div>
+      <div class="numpad-key" data-key="9">9</div>
+      <div class="numpad-key" data-key="000">000</div>
+      <div class="numpad-key" data-key="0">0</div>
+      <div class="numpad-key" data-key="del">⌫</div>
+    </div>
+    <button class="btn-primary full" id="btn-confirm-paid">Confirm Payment</button>
+    <button class="btn-ghost full" id="btn-cancel-paid">Cancel</button>
+  </div>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <script src="js/config.js"></script>
-  <script src="js/db.js"></script>
-  <script src="js/app.js"></script>
-  <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
-  
+<!-- MODAL: GAVE GOODS (Add Credit Sale) -->
+<div id="modal-gave-goods" class="modal-overlay hidden">
+  <div class="modal-sheet">
+    <div class="modal-title">Gave Goods 📦</div>
+    <div class="modal-subtitle" id="gave-goods-subtitle">New credit sale</div>
+    <div class="amount-display">
+      <div class="amount-display-label">Amount (₹)</div>
+      <div class="amount-display-num" id="goods-amount-display">₹0</div>
+    </div>
+    <div class="quick-amounts">
+      <div class="qa-chip goods-chip" data-amt="5000">₹5K</div>
+      <div class="qa-chip goods-chip" data-amt="10000">₹10K</div>
+      <div class="qa-chip goods-chip" data-amt="20000">₹20K</div>
+      <div class="qa-chip goods-chip" data-amt="50000">₹50K</div>
+    </div>
+    <div class="numpad goods-numpad">
+      <div class="numpad-key" data-key="1">1</div>
+      <div class="numpad-key" data-key="2">2</div>
+      <div class="numpad-key" data-key="3">3</div>
+      <div class="numpad-key" data-key="4">4</div>
+      <div class="numpad-key" data-key="5">5</div>
+      <div class="numpad-key" data-key="6">6</div>
+      <div class="numpad-key" data-key="7">7</div>
+      <div class="numpad-key" data-key="8">8</div>
+      <div class="numpad-key" data-key="9">9</div>
+      <div class="numpad-key" data-key="000">000</div>
+      <div class="numpad-key" data-key="0">0</div>
+      <div class="numpad-key" data-key="del">⌫</div>
+    </div>
+    <button class="btn-primary full" id="btn-confirm-goods">Confirm Sale</button>
+    <button class="btn-ghost full" id="btn-cancel-goods">Cancel</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden"></div>
+
+<!-- OFFLINE BANNER -->
+<div id="offline-banner" class="offline-banner hidden">📵 Offline — data saved locally</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/db.js"></script>
+<script src="js/app.js"></script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
-</html>
-</body>
-
 </html>
