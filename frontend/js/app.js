@@ -332,19 +332,31 @@ const App = (() => {
     setTimeout(() => document.getElementById('new-cust-name').focus(), 100);
   });
 
+  // Only allow digits in phone field
+  document.getElementById('new-cust-phone').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '').slice(0, 10);
+  });
+
   document.getElementById('btn-cancel-add').addEventListener('click', () => {
     document.getElementById('modal-add-customer').classList.add('hidden');
   });
 
   document.getElementById('btn-save-customer').addEventListener('click', async () => {
-    const name  = document.getElementById('new-cust-name').value.trim();
-    const phone = document.getElementById('new-cust-phone').value.trim();
-    const limit = document.getElementById('new-cust-limit').value;
-    const errEl = document.getElementById('add-cust-error');
+    const name      = document.getElementById('new-cust-name').value.trim();
+    const phoneRaw  = document.getElementById('new-cust-phone').value.trim().replace(/\D/g, '');
+    const phone     = '+91' + phoneRaw;   // always prepend +91
+    const limit     = document.getElementById('new-cust-limit').value;
+    const errEl     = document.getElementById('add-cust-error');
     errEl.classList.add('hidden');
 
-    if (!name)  { errEl.textContent = 'Name is required'; errEl.classList.remove('hidden'); return; }
-    if (!phone) { errEl.textContent = 'Phone is required'; errEl.classList.remove('hidden'); return; }
+    if (!name) {
+      errEl.textContent = 'Customer name is required';
+      errEl.classList.remove('hidden'); return;
+    }
+    if (!phoneRaw || phoneRaw.length !== 10) {
+      errEl.textContent = 'Enter a valid 10 digit mobile number';
+      errEl.classList.remove('hidden'); return;
+    }
 
     try {
       await DB.addCustomer(name, phone, limit);
@@ -509,7 +521,7 @@ const App = (() => {
 
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.querySelectorAll('[data-nav="settings"]').forEach(n => n.classList.add('active'));
-  } 
+  }
 
   document.getElementById('btn-save-settings').addEventListener('click', () => {
     const limit = parseInt(document.getElementById('default-credit-limit').value || DEFAULT_CREDIT_LIMIT);
@@ -532,10 +544,10 @@ const App = (() => {
     renderDashboard();
     openProfile(id);
   }
-
- async function init() {
+async function init() {
   showScreen('splash');
-  await new Promise(r => setTimeout(r, 1500));
+
+  await new Promise(r => setTimeout(r, 1000));
 
   try {
     const user = await DB.restoreSession();
@@ -550,11 +562,18 @@ const App = (() => {
   } catch (e) {
     console.error('Init failed:', e);
 
-    alert('Something went wrong. Please login again.');
+    if (!navigator.onLine) {
+      alert('No internet connection. Showing login.');
+    } else {
+      alert('Something went wrong. Please login again.');
+    }
 
     showScreen('login');
   }
 }
 
-return { openProfileById };
+// 👉 THIS runs the app
+init();
+
+  return { openProfileById };
 })();
